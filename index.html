@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mine Sweeper</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body onload="onInit()">
+    <div class="box">
+        <h1>Mine Sweeper</h1>
+        <div class="levels">
+            <p>Chose your Level:</p>
+            <button onclick="onSetLv({size:4, mines:2})">Beginner 4X4</button>
+            <button onclick="onSetLv({size:8, mines:14})">Medium 8X8</button>
+            <button onclick="onSetLv({size:12, mines:32})">Expert 12X12</button>
+            <p class="emoji" onclick="onInit()">😃</p>
+        </div>
+        <p class="lives">Live:❤️❤️❤️</p>
+        <table class="board">
+
+        </table>
+    </div>
+
+
+
+    <script src="js/main.js"></script>
+    <script src="js/util.js"></script>
+
+</body>
+
+</html>
