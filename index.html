@@ -14,20 +14,24 @@
         <h1>Mine Sweeper</h1>
         <div class="levels">
             <p>Chose your Level:</p>
-            <button onclick="onSetLv({size:4, mines:2})">Beginner 4X4</button>
-            <button onclick="onSetLv({size:8, mines:14})">Medium 8X8</button>
-            <button onclick="onSetLv({size:12, mines:32})">Expert 12X12</button>
+            <button onclick="onSetLv({size:4, mines:2})">Beginner</button>
+            <button onclick="onSetLv({size:8, mines:14})">Medium</button>
+            <button onclick="onSetLv({size:12, mines:32})">Expert</button>
             <p class="emoji" onclick="onInit()">😃</p>
         </div>
         <p class="lives">Live:❤️❤️❤️</p>
         <table class="board">
 
         </table>
+        <button class="hints" onclick="onHint(this)">💡</button>
+        <button class="hints" onclick="onHint(this)">💡</button>
+        <button class="hints" onclick="onHint(this)">💡</button>
     </div>
 
 
 
     <script src="js/main.js"></script>
+    <script src="js/bonus.js"></script>
     <script src="js/util.js"></script>
 
 </body>

@@ -30,6 +30,7 @@ function onInit() {
 }
 
 function onSetLv(level) {
+    if(isHintOn) return
     gGame.isOn = true
     gBoard = []
     id = 0
@@ -42,6 +43,7 @@ function onSetLv(level) {
     document.querySelector('.emoji').innerText = '😃'
     updateLives()
 
+    resatHints()
 
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
@@ -49,7 +51,7 @@ function onSetLv(level) {
     var elBox = document.querySelector('.box')
     var elLevelBox = document.querySelector('.levels')
     elBox.style.width = (gLevel.SIZE * 60 + 100) + 'px'
-    elBox.style.height = (gLevel.SIZE * 60 + 200) + 'px'
+    elBox.style.height = (gLevel.SIZE * 60 + 250) + 'px'
     elLevelBox.style.width = (gLevel.SIZE * 60 + 100) + 'px'
 
     renderBlankBoard()
@@ -106,6 +108,11 @@ function clickLeft(row, col) {
         gFirstClick = false
     }
 
+    if (isHintOn) {
+        revileNegs(row, col)
+        return
+    }
+
     if (!gBoard[row][col].isMine) {
         const countNegsMine = countNeighborsMine(row, col)
         gBoard[row][col].mineNegsCount = countNegsMine
@@ -120,7 +127,7 @@ function clickLeft(row, col) {
         gLevel.LIVES--
         updateLives()
         renderCell(row, col)
-        if(checkGameOver()) return
+        if (checkGameOver()) return
 
         setTimeout(function () {
             gBoard[row][col].isShow = false
@@ -143,7 +150,7 @@ function createBoard(row, col) {
                 isMine: false,
                 isShow: false,
                 isFlag: false,
-                mineNegsCount: '',
+                mineNegsCount: 0,
                 i,
                 j
             }
@@ -167,7 +174,10 @@ function renderCell(row, col) {
         elCell.classList.add('display-cell')
         cellIcon = gBoard[row][col].mineNegsCount
         if (!cellIcon) cellIcon = ''
-    }
+    } else {
+        elCell.classList.remove('display-cell')
+        // cellIcon = ''
+    } 
 
     if (gBoard[row][col].isMine) {
         if (gBoard[row][col].isShow) {
@@ -243,9 +253,9 @@ function showNegs(row, col) {
 
 }
 
-function updateLives(){
-    var hartText ='Live:' 
-    for(var i = 0; i < gLevel.LIVES; i++){
+function updateLives() {
+    var hartText = 'Live:'
+    for (var i = 0; i < gLevel.LIVES; i++) {
         hartText += HART
     }
     document.querySelector('.lives').innerText = hartText
@@ -270,9 +280,10 @@ function checkGameOver() {
 }
 
 function showMines() {
-    for (var i = 0; i < gNinesCells.length; i++){
+    for (var i = 0; i < gNinesCells.length; i++) {
         gNinesCells[i].isShow = true
+        gNinesCells[i].isFlag = false
         console.log(gNinesCells[i]);
-        renderCell(gNinesCells[i].i,gNinesCells[i].j)
+        renderCell(gNinesCells[i].i, gNinesCells[i].j)
     }
 }
