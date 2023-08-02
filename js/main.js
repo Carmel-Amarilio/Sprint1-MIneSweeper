@@ -21,6 +21,7 @@ var gBoard = []
 var gFirstClick = true
 var gEmptyCellId = []
 var gNinesCells = []
+var gTimerIntervalId
 
 
 
@@ -44,15 +45,17 @@ function onSetLv(level) {
     updateLives()
 
     resatHints()
+    const elTimer = document.querySelector('.timer span')
+    elTimer.innerText = '00.00'
 
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
 
     var elBox = document.querySelector('.box')
     var elLevelBox = document.querySelector('.levels')
-    elBox.style.width = (gLevel.SIZE * 60 + 100) + 'px'
-    elBox.style.height = (gLevel.SIZE * 60 + 250) + 'px'
-    elLevelBox.style.width = (gLevel.SIZE * 60 + 100) + 'px'
+    elBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
+    elBox.style.height = (gLevel.SIZE * 60 + 400) + 'px'
+    elLevelBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
 
     renderBlankBoard()
 
@@ -104,6 +107,7 @@ function clickRight(row, col) {
 
 function clickLeft(row, col) {
     if (gFirstClick) {
+        startTimer()
         gBoard = createBoard(row, col)
         gFirstClick = false
     }
@@ -269,12 +273,14 @@ function checkGameOver() {
         console.log('wine!!');
         elEmoji.innerText = '😎'
         gGame.isOn = false
+        clearInterval(gTimerIntervalId)
     }
     if (!gLevel.LIVES) {
         console.log('lose');
         showMines()
         elEmoji.innerText = '🤯'
         gGame.isOn = false
+        clearInterval(gTimerIntervalId)
         return true
     }
 }

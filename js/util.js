@@ -14,3 +14,13 @@ function getCellById(board, id) {
     }
     return null
 }
+
+function startTimer() {
+    var startTime = Date.now()
+
+    gTimerIntervalId = setInterval(function () {
+        var delta = Date.now() - startTime
+        var elTimer = document.querySelector('.timer span')
+        elTimer.innerText = `${(delta / 1000).toFixed(2)}`
+    }, 37)
+}

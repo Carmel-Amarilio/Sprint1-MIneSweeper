@@ -9,7 +9,7 @@ function resatHints() {
     isHintOn = false
     gElHint = null
 
-    const elHints = document.querySelectorAll('.hints')
+    const elHints = document.querySelectorAll('.hint')
     for (var i = 0; i < elHints.length; i++) {
         elHints[i].innerText = '💡'
         elHints[i].style.display= 'inline-block'

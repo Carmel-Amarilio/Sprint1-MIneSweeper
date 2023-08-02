@@ -18,14 +18,21 @@
             <button onclick="onSetLv({size:8, mines:14})">Medium</button>
             <button onclick="onSetLv({size:12, mines:32})">Expert</button>
             <p class="emoji" onclick="onInit()">😃</p>
+            <p class="timer">⏳: <span>000.0</span> sec</p>
+            <div class="hints">
+                <button class="hint" onclick="onHint(this)">💡</button>
+                <button class="hint" onclick="onHint(this)">💡</button>
+                <button class="hint" onclick="onHint(this)">💡</button>
+            </div>
         </div>
         <p class="lives">Live:❤️❤️❤️</p>
         <table class="board">
 
         </table>
-        <button class="hints" onclick="onHint(this)">💡</button>
-        <button class="hints" onclick="onHint(this)">💡</button>
-        <button class="hints" onclick="onHint(this)">💡</button>
+    </div>
+
+    <div class="best-score">
+
     </div>
 
 
