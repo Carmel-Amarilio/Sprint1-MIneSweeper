@@ -22,6 +22,14 @@ function resatBonus() {
     elBtn.innerText = `${safeClicksCount} safe clicks`
 }
 
+const darkModeCheckbox = document.getElementById('darkModeCheckbox')
+
+darkModeCheckbox.addEventListener('change', function () {
+    if (darkModeCheckbox.checked) document.body.style.backgroundColor = 'black'
+    else  document.body.style.backgroundColor = 'white'
+});
+
+
 
 function onHint(elHint) {
     if (isHintOn || !gGame.isOn) return
@@ -83,3 +91,7 @@ function onSafeClicks(elBtn) {
         renderCell(cell.i, cell.j)
     }, 1000);
 }
+
+
+
+
