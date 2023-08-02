@@ -14,12 +14,12 @@ body {
     position: relative;
 }
 
-.levels p {
+.features1 p {
     margin-bottom: 2px;
     font-size: 30px;
 }
 
-.levels {
+.features1 {
     margin: auto;
     background-color: rgb(148, 148, 148);
     height: 120px;
@@ -108,6 +108,26 @@ table, td {
     background-color: rgb(192, 186, 186);
 }
 
+.features2 {
+    margin: auto;
+    background-color: rgb(148, 148, 148);
+    height: 70px;
+    margin-top: 20px;
+    margin-bottom: 5PX;
+}
+
+.safe-clicks{
+    height: 50px;
+    width: 100px;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    position: absolute;
+    background-color:rgb(85, 201, 237);
+    border-radius: 10%;
+    color: white;
+    left: 0px;
+}
 
 .best-score{
     margin: auto;

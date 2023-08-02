@@ -3,17 +3,23 @@
 
 var isHintOn = false
 var gElHint = null
+var safeClicksCount = 3
 
 
-function resatHints() {
+function resatBonus() {
+    //hints
     isHintOn = false
     gElHint = null
-
     const elHints = document.querySelectorAll('.hint')
     for (var i = 0; i < elHints.length; i++) {
         elHints[i].innerText = '💡'
-        elHints[i].style.display= 'inline-block'
+        elHints[i].style.display = 'inline-block'
     }
+
+    //Safe Clicks
+    safeClicksCount = 3
+    const elBtn = document.querySelector('.safe-clicks')
+    elBtn.innerText = `${safeClicksCount} safe clicks`
 }
 
 
@@ -42,7 +48,7 @@ function revileNegs(row, col) {
     setTimeout(function () {
         gElHint.innerText = ''
         gElHint.style.backgroundColor = 'rgb(230, 230, 230)'
-        gElHint.style.display= 'none'
+        gElHint.style.display = 'none'
         for (var i = 0; i < revileNegs.length; i++) {
             var currCell = revileNegs[i]
             gBoard[currCell.i][currCell.j].isShow = false
@@ -51,4 +57,29 @@ function revileNegs(row, col) {
         }
     }, 1000);
 
+}
+
+
+function onSafeClicks(elBtn) {
+    if (gFirstClick || !safeClicksCount) return
+    safeClicksCount--
+    elBtn.innerText = `${safeClicksCount} safe clicks`
+    var SafeCellNotShow = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[i].length; j++) {
+            var currCell = gBoard[i][j]
+            if (!currCell.isShow && !currCell.isMine) {
+                SafeCellNotShow.push(currCell)
+            }
+        }
+    }
+    var ranMineIndx = getRandomIntInclusive(0, SafeCellNotShow.length - 1)
+    var cell = SafeCellNotShow[ranMineIndx]
+    gBoard[cell.i][cell.j].isShow = true
+    gBoard[cell.i][cell.j].mineNegsCount = countNeighborsMine(cell.i, cell.j)
+    renderCell(cell.i, cell.j)
+    setTimeout(function () {
+        gBoard[cell.i][cell.j].isShow = false
+        renderCell(cell.i, cell.j)
+    }, 1000);
 }

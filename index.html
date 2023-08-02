@@ -12,13 +12,13 @@
 <body onload="onInit()">
     <div class="box">
         <h1>Mine Sweeper</h1>
-        <div class="levels">
+        <div class="features1">
             <p>Chose your Level:</p>
             <button onclick="onSetLv({size:4, mines:2})">Beginner</button>
             <button onclick="onSetLv({size:8, mines:14})">Medium</button>
             <button onclick="onSetLv({size:12, mines:32})">Expert</button>
             <p class="emoji" onclick="onInit()">😃</p>
-            <p class="timer">⏳: <span>000.0</span> sec</p>
+            <p class="timer">⏳: <span>00.00</span> sec</p>
             <div class="hints">
                 <button class="hint" onclick="onHint(this)">💡</button>
                 <button class="hint" onclick="onHint(this)">💡</button>
@@ -27,13 +27,17 @@
         </div>
         <p class="lives">Live:❤️❤️❤️</p>
         <table class="board">
-
         </table>
+        <div class="features2">
+            <button class="safe-clicks" onclick="onSafeClicks(this)">3 safe clicks</button>
+
+        </div>
+
     </div>
 
-    <div class="best-score">
+    <!-- <div class="best-score">
 
-    </div>
+    </div> -->
 
 
 

@@ -31,6 +31,7 @@ function onInit() {
 }
 
 function onSetLv(level) {
+    clearInterval(gTimerIntervalId)
     if(isHintOn) return
     gGame.isOn = true
     gBoard = []
@@ -44,18 +45,19 @@ function onSetLv(level) {
     document.querySelector('.emoji').innerText = '😃'
     updateLives()
 
-    resatHints()
+    resatBonus()
     const elTimer = document.querySelector('.timer span')
     elTimer.innerText = '00.00'
+    
 
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
 
     var elBox = document.querySelector('.box')
-    var elLevelBox = document.querySelector('.levels')
+    var elFeatures1Box = document.querySelector('.features1')
     elBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
-    elBox.style.height = (gLevel.SIZE * 60 + 400) + 'px'
-    elLevelBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
+    elBox.style.height = (gLevel.SIZE * 70 + 350) + 'px'
+    elFeatures1Box.style.width = (gLevel.SIZE * 60 + 200) + 'px'
 
     renderBlankBoard()
 
