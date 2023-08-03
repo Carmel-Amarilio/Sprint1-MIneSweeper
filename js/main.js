@@ -22,7 +22,7 @@ var gBoard = []
 var gFirstClick = true
 var gEmptyCellId = []
 var gMinesCells = []
-var gTimerIntervalId
+var gTimerIntervalId = null
 var gAllBoard = []
 
 
@@ -46,23 +46,25 @@ function onSetLv(level) {
     gGame.markedCount = 0
     gGame.shownCount = 0
     gLevel.LIVES = 3
-    document.querySelector('.emoji').innerText = '😃'
+    gTimerIntervalId = null
+    gIsManuallyCreate = false
     updateLives()
     
     resatBonus()
-    const elTimer = document.querySelector('.timer span')
-    elTimer.innerText = '00.00'
     
     
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
     document.querySelector('.main-remaining span').innerText = gLevel.MINES
-
+    
+    
+    document.querySelector('.manually-create').style.backgroundColor = 'rgb(74, 219, 245)'
+    document.querySelector('.timer span').innerText = '00.00'
+    document.querySelector('.emoji').innerText = '😃'
     var elBox = document.querySelector('.box')
-    var elFeatures1Box = document.querySelector('.features1')
+    document.querySelector('.features1').style.width = (gLevel.SIZE * 60 + 200) + 'px'
     elBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
     elBox.style.height = (gLevel.SIZE * 70 + 350) + 'px'
-    elFeatures1Box.style.width = (gLevel.SIZE * 60 + 200) + 'px'
 
     renderBlankBoard()
 
@@ -115,21 +117,23 @@ function clickRight(row, col) {
 
 
 function clickLeft(row, col) {
+    if(gIsManuallyCreate){
+        plantMinesPlyer(row, col)
+        return
+    } 
     if (gFirstClick) {
-        startTimer()
         gBoard = createBoard(row, col)
         const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
         gAllBoard.push(copyOfGBoard);
         gFirstClick = false
     }
-
     if (isHintOn) {
         revileNegs(row, col)
         return
     }
-
+    
     if (isMegaHintOn) {
-
+        
         if (!cell2 && cell1) {
             cell2 = { row, col }
             revileEra()
@@ -137,7 +141,8 @@ function clickLeft(row, col) {
         if (!cell1) cell1 = { row, col }
         return
     }
-
+    
+    if(!gTimerIntervalId) startTimer()
     if (!gBoard[row][col].isMine) {
         const countNegsMine = countNeighborsMine(row, col)
         gBoard[row][col].mineNegsCount = countNegsMine
@@ -285,7 +290,7 @@ function updateLives() {
 
 function checkGameOver() {
     onBoardMap()
-    document.querySelector('.main-remaining span').innerText = gLevel.MINES - gGame.markedCount 
+    document.querySelector('.main-remaining span').innerText = gMinesCells.length - gGame.markedCount 
     const elEmoji = document.querySelector('.emoji')
     const emptyCells = gLevel.SIZE * gLevel.SIZE - gMinesCells.length
     if (gMinesCells.length === gGame.markedCount && gGame.shownCount === emptyCells) {

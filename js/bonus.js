@@ -105,10 +105,14 @@ function onMegaHint(elMegaHint) {
 
 function revileEra() {
     console.log(cell1, cell2);
+    const startRow = (cell1.row < cell2.row)? cell1.row : cell2.row
+    const endRow = (cell1.row > cell2.row)? cell1.row : cell2.row
+    const startCol = (cell1.col < cell2.col)? cell1.col : cell2.col
+    const endCol = (cell1.col > cell2.col)? cell1.col : cell2.col
 
     var revileEra = []
-    for (var i = cell1.row; i <= cell2.row; i++) {
-        for (var j = cell1.col; j <= cell2.col; j++) {
+    for (var i = startRow; i <= endRow; i++) {
+        for (var j = startCol; j <= endCol; j++) {
             if (gBoard[i][j].isShow) continue
             if (gBoard[i][j].isFlag) continue
             gBoard[i][j].mineNegsCount = countNeighborsMine(i, j)
@@ -184,12 +188,13 @@ function onMineExterminator(elBtn) {
             randBoard(gBoard)
         }
     }
+    mainOnBoardMap()
+    document.querySelector('.main-remaining span').innerText = gMinesCells.length - gGame.markedCount 
 }
 
 function checkBestScore() {
-    // localStorage.setItem('bestScore', Infinity)
+    localStorage.setItem('bestScore', Infinity)
     const bestScore = localStorage.getItem('bestScore');
-    const bestScorePlayerName = localStorage.getItem('bestScorePlayerName');
     if (gDeltaTime < bestScore) {
         localStorage.setItem('bestScore', gDeltaTime);
         const bestScorePlayerName = prompt('You got a new best score! Please type your name')

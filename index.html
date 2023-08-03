@@ -32,17 +32,21 @@
         </div>
 
         <p class="lives">Live:❤️❤️❤️</p>
-        <p class="main-remaining">💣: <span>32</span></p>
+        <div class="features2">
+            <p class="main-remaining">💣: <span>32</span></p>
+            <button class="manually-create" onclick="onManuallyCreate(this)"> manually create💣</button>
+        </div>
+
         <table class="board"></table>
 
-        <div class="features2">
+        <div class="features3">
             <button class="safe-clicks" onclick="onSafeClicks(this)">3 safe clicks</button>
             <button class="undo" onclick="onUndo()">UNDO</button>
             <button class="mine-exterminator" onclick="onMineExterminator()">Mine Exterminator</button>
 
         </div>
 
-        <h2 class="bast-score">bast Score By <span class="name"></span>: <span class="score"></span></h2>
+        <h2 class="bast-score">bast Score- by <span class="name"></span>: <span class="score"></span></h2>
 
     </div>
 
@@ -54,6 +58,7 @@
 
     <script src="js/main.js"></script>
     <script src="js/bonus.js"></script>
+    <script src="js/ManuallyPositionedMines.js"></script>
     <script src="js/util.js"></script>
 
 </body>

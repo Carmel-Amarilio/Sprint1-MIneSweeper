@@ -112,6 +112,10 @@ input {
     font-size: 30px;
 }
 
+
+
+
+
 .main-remaining{
     width: 80px;
     height: 35px;
@@ -119,6 +123,20 @@ input {
     margin-left: 5px;
     font-size: 25px;
 }
+
+.manually-create{
+    width: 80px;
+    height: 35px;
+    background-color: rgb(74, 219, 245) ;
+    color: white;
+    font-size: 13px;
+    margin-right: 5px;
+    position: absolute;
+    right: 0px;
+    top: 20px;
+}
+
+
 
 table {
     margin: 0 auto;
@@ -147,7 +165,10 @@ td {
     background-color: rgb(192, 186, 186);
 }
 
-.features2 {
+
+
+
+.features3 {
     margin: auto;
     background-color: rgb(148, 148, 148);
     height: 70px;
@@ -199,4 +220,8 @@ td {
   background-color: bisque;
       font-family: 'Courier New', Courier, monospace;
 
+}
+
+.bast-score span{
+    color: rgb(93, 93, 254);
 }
