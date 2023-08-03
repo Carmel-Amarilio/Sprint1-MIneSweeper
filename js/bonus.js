@@ -4,7 +4,6 @@
 
 // todo: baest score
 // todo: Manually positioned mines
-// todo:MEGA HINT
 // todo:MINE EXTERMINATOR
 
 var isHintOn = false
@@ -37,6 +36,9 @@ function resatBonus() {
     isMegaHintOn = false
     cell1 = null
     cell2 = null
+    const elmEGAHints = document.querySelector('.mega-hint')
+    elmEGAHints.innerText = '🎇'
+    elmEGAHints.style.display = 'inline-block'
 
     //Safe Clicks
     safeClicksCount = 3
@@ -109,6 +111,7 @@ function revileEra(){
     }
 
     setTimeout(function () {
+        gElMegaHin.style.backgroundColor = 'rgb(230, 230, 230)'
         gElMegaHin.style.display = 'none'
         for (var i = 0; i < revileEra.length; i++) {
             var currCell = revileEra[i]
