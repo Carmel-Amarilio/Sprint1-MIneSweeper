@@ -116,7 +116,7 @@ function clickRight(row, col) {
 
 function clickLeft(row, col) {
     if (gFirstClick) {
-        //startTimer()
+        startTimer()
         gBoard = createBoard(row, col)
         const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
         gAllBoard.push(copyOfGBoard);
@@ -126,6 +126,16 @@ function clickLeft(row, col) {
     if (isHintOn) {
         revileNegs(row, col)
         return
+    }
+
+    if (isMegaHintOn) {
+        
+        if(!cell2 && cell1){
+            cell2 ={row, col}
+            revileEra()
+        } 
+        if(!cell1) cell1 ={row, col}
+        return 
     }
 
     if (!gBoard[row][col].isMine) {

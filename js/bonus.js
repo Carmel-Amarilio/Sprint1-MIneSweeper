@@ -1,9 +1,26 @@
 'use strict'
 
 
+
+// todo: baest score
+// todo: Manually positioned mines
+// todo:MEGA HINT
+// todo:MINE EXTERMINATOR
+
 var isHintOn = false
 var gElHint = null
+var isMegaHintOn = false
+var gElMegaHin = null
+var cell1 = null
+var isMegaHintOn = false
+var cell2 = null
 var safeClicksCount = 3
+
+const darkModeCheckbox = document.getElementById('darkModeCheckbox')
+darkModeCheckbox.addEventListener('change', function () {
+    if (darkModeCheckbox.checked) document.body.style.backgroundColor = 'black'
+    else document.body.style.backgroundColor = 'white'
+});
 
 
 function resatBonus() {
@@ -16,6 +33,11 @@ function resatBonus() {
         elHints[i].style.display = 'inline-block'
     }
 
+    // mega hint
+    isMegaHintOn = false
+    cell1 = null
+    cell2 = null
+
     //Safe Clicks
     safeClicksCount = 3
     const elBtn = document.querySelector('.safe-clicks')
@@ -23,19 +45,14 @@ function resatBonus() {
 
     //undo
     gAllBoard = []
+    
 }
 
-const darkModeCheckbox = document.getElementById('darkModeCheckbox')
-
-darkModeCheckbox.addEventListener('change', function () {
-    if (darkModeCheckbox.checked) document.body.style.backgroundColor = 'black'
-    else document.body.style.backgroundColor = 'white'
-});
 
 
 
 function onHint(elHint) {
-    if (isHintOn || !gGame.isOn) return
+    if (isHintOn || !gGame.isOn || isMegaHintOn ) return
     gElHint = elHint
     gElHint.style.backgroundColor = 'rgb(248, 225, 119)'
     isHintOn = true
@@ -69,6 +86,41 @@ function revileNegs(row, col) {
     }, 1000);
 }
 
+function onMegaHint(elMegaHint) {
+    if (isHintOn || !gGame.isOn || isMegaHintOn ) return
+    gElMegaHin = elMegaHint
+    isMegaHintOn = true
+    gElMegaHin.style.backgroundColor = 'rgb(248, 225, 119)'
+}
+
+function revileEra(){
+    console.log(cell1,cell2);
+
+    var revileEra = []
+    for (var i = cell1.row; i <= cell2.row; i++) {
+        for (var j = cell1.col; j <= cell2.col; j++) {
+            if (gBoard[i][j].isShow) continue
+            if (gBoard[i][j].isFlag) continue
+            gBoard[i][j].mineNegsCount = countNeighborsMine(i, j)
+            gBoard[i][j].isShow = true
+            revileEra.push({ i, j })
+            renderCell(i, j)
+        }
+    }
+
+    setTimeout(function () {
+        gElMegaHin.style.display = 'none'
+        for (var i = 0; i < revileEra.length; i++) {
+            var currCell = revileEra[i]
+            gBoard[currCell.i][currCell.j].isShow = false
+            renderCell(currCell.i, currCell.j)
+            isHintOn = false
+        }
+    }, 1000);
+
+    isMegaHintOn = false
+}
+
 
 function onSafeClicks(elBtn) {
     if (gFirstClick || !safeClicksCount) return
@@ -97,7 +149,6 @@ function onSafeClicks(elBtn) {
 
 
 function onUndo() {
-    console.log(gAllBoard);
     if (!gAllBoard.length) return
     if (gAllBoard.length > 1) gAllBoard.pop()
     gBoard = gAllBoard.pop()
@@ -120,9 +171,9 @@ function randBoard(board) {
                 if (!cellDisplay) cellDisplay = ''
                 classCell = `class="display-cell"`
             }
-            
+
             if (gBoard[i][j].isMine && gBoard[i][j].isShow) gBoard[i][j].classList.remove('display-cell')
-                 
+
             strHTML += ` \n<td title="Seat: ${i}, ${j}" ${classCell} onmousedown="onCellClick(event, ${i}, ${j})">${cellDisplay}</td>`
         }
         strHTML += `\n</tr>`
