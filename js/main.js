@@ -5,9 +5,9 @@ const MINE = '💣'
 const FLAG = '🚩'
 const HART = '❤️'
 const gLevel = {
-    SIZE: 0,
-    MINES: 0,
-    LIVES: 0
+    SIZE: 8,
+    MINES: 14,
+    LIVES: 3
 }
 const gGame = {
     isOn: false,
@@ -21,7 +21,7 @@ var id = 0
 var gBoard = []
 var gFirstClick = true
 var gEmptyCellId = []
-var gNinesCells = []
+var gMinesCells = []
 var gTimerIntervalId
 var gAllBoard = []
 
@@ -30,7 +30,8 @@ var gAllBoard = []
 
 
 function onInit() {
-    onSetLv({ size: 8, mines: 14 })
+
+    onSetLv({ size: gLevel.SIZE, mines: gLevel.MINES })
 }
 
 function onSetLv(level) {
@@ -41,7 +42,7 @@ function onSetLv(level) {
     id = 0
     gFirstClick = true
     gEmptyCellId = []
-    gNinesCells = []
+    gMinesCells = []
     gGame.markedCount = 0
     gGame.shownCount = 0
     gLevel.LIVES = 3
@@ -102,10 +103,8 @@ function clickRight(row, col) {
     if (gBoard.length === 0 || gBoard[row][col].isShow) return
     if (!gBoard[row][col].isFlag) {
         gBoard[row][col].isFlag = true
-        gGame.markedCount++
     } else {
         gBoard[row][col].isFlag = false
-        gGame.markedCount--
     }
     renderCell(row, col)
     const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
@@ -129,20 +128,19 @@ function clickLeft(row, col) {
     }
 
     if (isMegaHintOn) {
-        
-        if(!cell2 && cell1){
-            cell2 ={row, col}
+
+        if (!cell2 && cell1) {
+            cell2 = { row, col }
             revileEra()
-        } 
-        if(!cell1) cell1 ={row, col}
-        return 
+        }
+        if (!cell1) cell1 = { row, col }
+        return
     }
 
     if (!gBoard[row][col].isMine) {
         const countNegsMine = countNeighborsMine(row, col)
         gBoard[row][col].mineNegsCount = countNegsMine
         gBoard[row][col].isShow = true
-        gGame.shownCount++
         if (!countNegsMine) showNegs(row, col)
 
     } else {
@@ -229,7 +227,7 @@ function plantMines(board, row, col) {
         var ranMineIndx = getRandomIntInclusive(0, gEmptyCellId.length - 1)
         var cell = getCellById(board, gEmptyCellId[ranMineIndx])
         cell.isMine = true
-        gNinesCells.push(cell)
+        gMinesCells.push(cell)
         gEmptyCellId.splice(ranMineIndx, 1)
     }
 
@@ -285,12 +283,13 @@ function updateLives() {
 }
 
 function checkGameOver() {
+    onBoardMap()
     const elEmoji = document.querySelector('.emoji')
-    const emptyCells = gLevel.SIZE * gLevel.SIZE - gLevel.MINES
-
-    if (gLevel.MINES === gGame.markedCount && gGame.shownCount === emptyCells) {
+    const emptyCells = gLevel.SIZE * gLevel.SIZE - gMinesCells.length
+    if (gMinesCells.length === gGame.markedCount && gGame.shownCount === emptyCells) {
         console.log('wine!!');
         elEmoji.innerText = '😎'
+        checkBestScore()
         gGame.isOn = false
         clearInterval(gTimerIntervalId)
     }
@@ -305,10 +304,10 @@ function checkGameOver() {
 }
 
 function showMines() {
-    for (var i = 0; i < gNinesCells.length; i++) {
-        gNinesCells[i].isShow = true
-        gNinesCells[i].isFlag = false
-        console.log(gNinesCells[i]);
-        renderCell(gNinesCells[i].i, gNinesCells[i].j)
+    for (var i = 0; i < gMinesCells.length; i++) {
+        gMinesCells[i].isShow = true
+        gMinesCells[i].isFlag = false
+        console.log(gMinesCells[i]);
+        renderCell(gMinesCells[i].i, gMinesCells[i].j)
     }
 }

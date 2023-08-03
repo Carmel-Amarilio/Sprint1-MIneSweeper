@@ -187,15 +187,9 @@ td {
     right:0% ;
 }
 
-.best-score {
-    margin: auto;
-    margin-top: 20px;
-    background-color: lightblue;
-    width: 500px;
-    height: 500px;
-    border-radius: 10%;
-    position: absolute;
-    bottom: 10px;
-    right: 25%;
-    ;
+.bast-score {
+    height: 30px;
+  background-color: bisque;
+      font-family: 'Courier New', Courier, monospace;
+
 }

@@ -12,6 +12,7 @@ var cell1 = null
 var isMegaHintOn = false
 var cell2 = null
 var safeClicksCount = 3
+var gEliminateMine = 0
 
 const darkModeCheckbox = document.getElementById('darkModeCheckbox')
 darkModeCheckbox.addEventListener('change', function () {
@@ -19,6 +20,12 @@ darkModeCheckbox.addEventListener('change', function () {
     else document.body.style.backgroundColor = 'white'
 });
 
+const elBestScore = document.querySelector('.score')
+const elBestScorePlayerName = document.querySelector('.name')
+const textBastScore = localStorage.getItem('bestScore') / 1000 + 'sec'
+const bestScorePlayerName = localStorage.getItem('bestScorePlayerName')
+elBestScore.innerText = textBastScore
+elBestScorePlayerName.innerText = bestScorePlayerName
 
 function resatBonus() {
     //hints
@@ -45,6 +52,9 @@ function resatBonus() {
 
     //undo
     gAllBoard = []
+
+    //MINE EXTERMINATOR
+    gEliminateMine = 0
 
 }
 
@@ -157,27 +167,37 @@ function onUndo() {
 }
 
 function onMineExterminator(elBtn) {
-    if(!gLevel.MINES) return
-    var eliminate = (gLevel.MINES <= 4) ? 1 : 3
-    for (var i = 0; i < eliminate; i++) {
+    mainOnBoardMap()
+    if (!gLevel.MINES || !gGame.isOn) return
+    var eliminateMine = (gLevel.MINES <= 3) ? 1 : 3
+    for (var i = 0; i < eliminateMine; i++) {
         if (gFirstClick) {
             startTimer()
-            gLevel.MINES--
             gBoard = createBoard(0, 0)
             const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
             gAllBoard.push(copyOfGBoard);
             gFirstClick = false
         } else {
-            gLevel.MINES--
-            gNinesCells
-            var ranMineIndx = getRandomIntInclusive(0, gNinesCells.length - 1)
-            var cell = gNinesCells[ranMineIndx]
+            var ranMineIndx = getRandomIntInclusive(0, gMinesCells.length - 1)
+            var cell = gBoard[gMinesCells[ranMineIndx].i][gMinesCells[ranMineIndx].j]
             cell.isMine = false
-            gNinesCells.splice(ranMineIndx, 1)
             randBoard(gBoard)
         }
     }
+}
 
+function checkBestScore() {
+    // localStorage.setItem('bestScore', Infinity)
+    const bestScore = localStorage.getItem('bestScore');
+    const bestScorePlayerName = localStorage.getItem('bestScorePlayerName');
+    if (gDeltaTime < bestScore) {
+        localStorage.setItem('bestScore', gDeltaTime);
+        const bestScorePlayerName = prompt('You got a new best score! Please type your name')
+        localStorage.setItem('bestScorePlayerName', bestScorePlayerName);
+        const textBastScore = gDeltaTime / 1000 + 'sec'
+        elBestScore.innerText = textBastScore
+        elBestScorePlayerName.innerText = bestScorePlayerName
+    }
 }
 
 function randBoard(board) {
@@ -209,4 +229,26 @@ function randBoard(board) {
     const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
     gAllBoard.push(copyOfGBoard);
 
+}
+
+function mainOnBoardMap() {
+    gMinesCells = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine) gMinesCells.push(gBoard[i][j])
+        }
+    }
+}
+
+function onBoardMap(){
+    gMinesCells = []
+    gGame.shownCount=0
+    gGame.markedCount=0
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine) gMinesCells.push(gBoard[i][j])
+            if (gBoard[i][j].isShow)  gGame.shownCount++
+            if (gBoard[i][j].isFlag)  gGame.markedCount++
+        }
+    }
 }
