@@ -8,6 +8,22 @@ body {
     font-family: 'Times New Roman', Times, serif
 }
 
+
+label {
+    font:
+        1rem 'Fira Sans',
+        sans-serif;
+    position: absolute;
+    top: 30px;
+    left: 25px;
+}
+
+input {
+    position: absolute;
+    top: 30px;
+    left: 0;
+}
+
 .box {
     background-color: rgb(230, 230, 230);
     margin: auto;
@@ -131,6 +147,19 @@ td {
     left: 0px;
 }
 
+.undo {
+    height: 50px;
+    width: 100px;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    position: absolute;
+    background-color: rgb(85, 201, 237);
+    border-radius: 10%;
+    color: white;
+    left: 43%;
+}
+
 .best-score {
     margin: auto;
     margin-top: 20px;
@@ -145,18 +174,3 @@ td {
 }
 
 
-
-label {
-    font:
-        1rem 'Fira Sans',
-        sans-serif;
-    position: absolute;
-    top: 30px;
-    left: 25px;
-}
-
-input {
-    position: absolute;
-    top: 30px;
-    left: 0;
-}

@@ -16,12 +16,15 @@ const gGame = {
     secsPassed: 0
 }
 
+
 var id = 0
 var gBoard = []
 var gFirstClick = true
 var gEmptyCellId = []
 var gNinesCells = []
 var gTimerIntervalId
+var gAllBoard = []
+
 
 
 
@@ -32,7 +35,7 @@ function onInit() {
 
 function onSetLv(level) {
     clearInterval(gTimerIntervalId)
-    if(isHintOn) return
+    if (isHintOn) return
     gGame.isOn = true
     gBoard = []
     id = 0
@@ -48,7 +51,7 @@ function onSetLv(level) {
     resatBonus()
     const elTimer = document.querySelector('.timer span')
     elTimer.innerText = '00.00'
-    
+
 
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
@@ -87,6 +90,8 @@ function onCellClick(event, i, j) {
 
     if (event.button === 0) {
         clickLeft(i, j);
+        const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
+        gAllBoard.push(copyOfGBoard);
 
     } else if (event.button === 2) {
         clickRight(i, j);
@@ -103,14 +108,18 @@ function clickRight(row, col) {
         gGame.markedCount--
     }
     renderCell(row, col)
+    const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
+    gAllBoard.push(copyOfGBoard);
     checkGameOver()
 }
 
 
 function clickLeft(row, col) {
     if (gFirstClick) {
-        startTimer()
+        //startTimer()
         gBoard = createBoard(row, col)
+        const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
+        gAllBoard.push(copyOfGBoard);
         gFirstClick = false
     }
 
@@ -124,7 +133,6 @@ function clickLeft(row, col) {
         gBoard[row][col].mineNegsCount = countNegsMine
         gBoard[row][col].isShow = true
         gGame.shownCount++
-
         if (!countNegsMine) showNegs(row, col)
 
     } else {
@@ -183,7 +191,7 @@ function renderCell(row, col) {
     } else {
         elCell.classList.remove('display-cell')
         // cellIcon = ''
-    } 
+    }
 
     if (gBoard[row][col].isMine) {
         if (gBoard[row][col].isShow) {
@@ -245,7 +253,6 @@ function countNeighborsMine(row, col) {
 }
 
 function showNegs(row, col) {
-
     for (var i = row - 1; i <= row + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue
         for (var j = col - 1; j <= col + 1; j++) {

@@ -20,13 +20,16 @@ function resatBonus() {
     safeClicksCount = 3
     const elBtn = document.querySelector('.safe-clicks')
     elBtn.innerText = `${safeClicksCount} safe clicks`
+
+    //undo
+    gAllBoard = []
 }
 
 const darkModeCheckbox = document.getElementById('darkModeCheckbox')
 
 darkModeCheckbox.addEventListener('change', function () {
     if (darkModeCheckbox.checked) document.body.style.backgroundColor = 'black'
-    else  document.body.style.backgroundColor = 'white'
+    else document.body.style.backgroundColor = 'white'
 });
 
 
@@ -64,7 +67,6 @@ function revileNegs(row, col) {
             isHintOn = false
         }
     }, 1000);
-
 }
 
 
@@ -90,8 +92,44 @@ function onSafeClicks(elBtn) {
         gBoard[cell.i][cell.j].isShow = false
         renderCell(cell.i, cell.j)
     }, 1000);
+    gAllBoard.pop()
 }
 
 
+function onUndo() {
+    console.log(gAllBoard);
+    if (!gAllBoard.length) return
+    if (gAllBoard.length > 1) gAllBoard.pop()
+    gBoard = gAllBoard.pop()
+    randBoard(gBoard)
+}
 
+function randBoard(board) {
+    var strHTML = ''
+    for (var i = 0; i < board.length; i++) {
+        strHTML += `\n<tr>`
+        for (var j = 0; j < board[0].length; j++) {
+            var classCell = ''
+            var cellDisplay = ''
+            if (board[i][j].isFlag) {
+                cellDisplay = FLAG
+                board[i][j].isShow = false
+            }
+            if (board[i][j].isShow) {
+                cellDisplay = (board[i][j].isMine) ? MINE : board[i][j].mineNegsCount
+                if (!cellDisplay) cellDisplay = ''
+                classCell = `class="display-cell"`
+            }
+            
+            if (gBoard[i][j].isMine && gBoard[i][j].isShow) gBoard[i][j].classList.remove('display-cell')
+                 
+            strHTML += ` \n<td title="Seat: ${i}, ${j}" ${classCell} onmousedown="onCellClick(event, ${i}, ${j})">${cellDisplay}</td>`
+        }
+        strHTML += `\n</tr>`
+    }
+    const elBoard = document.querySelector('.board')
+    elBoard.innerHTML = strHTML
+    const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
+    gAllBoard.push(copyOfGBoard);
 
+}
