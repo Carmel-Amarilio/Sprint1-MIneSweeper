@@ -225,7 +225,7 @@ function randBoard(board) {
 
             if (gBoard[i][j].isMine && gBoard[i][j].isShow) gBoard[i][j].classList.remove('display-cell')
 
-            strHTML += ` \n<td title="Seat: ${i}, ${j}" ${classCell} onmousedown="onCellClick(event, ${i}, ${j})">${cellDisplay}</td>`
+            strHTML += ` \n<td title=" ${i}, ${j}" ${classCell} onmousedown="onCellClick(event, ${i}, ${j})">${cellDisplay}</td>`
         }
         strHTML += `\n</tr>`
     }

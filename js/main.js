@@ -75,7 +75,7 @@ function renderBlankBoard() {
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += `\n<tr>`
         for (var j = 0; j < gLevel.SIZE; j++) {
-            strHTML += ` \n<td title="Seat: ${i}, ${j}" onmousedown="onCellClick(event, ${i}, ${j})"></td>`
+            strHTML += ` \n<td title=" ${i}, ${j}" onmousedown="onCellClick(event, ${i}, ${j})"></td>`
         }
         strHTML += `\n</tr>`
     }
@@ -190,7 +190,7 @@ function createBoard(row, col) {
 }
 
 function renderCell(row, col) {
-    const elCell = document.querySelector(`[title="Seat: ${row}, ${col}"]`)
+    const elCell = document.querySelector(`[title=" ${row}, ${col}"]`)
     var cellIcon = ''
 
     if (gBoard[row][col].isFlag) {
