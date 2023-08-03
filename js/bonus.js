@@ -164,7 +164,7 @@ function onSafeClicks(elBtn) {
 
 
 function onUndo() {
-    if (!gAllBoard.length) return
+    if (!gAllBoard.length || gIsManuallyCreate) return
     if (gAllBoard.length > 1) gAllBoard.pop()
     gBoard = gAllBoard.pop()
     randBoard(gBoard)
@@ -172,7 +172,7 @@ function onUndo() {
 
 function onMineExterminator(elBtn) {
     mainOnBoardMap()
-    if (!gLevel.MINES || !gGame.isOn) return
+    if (!gLevel.MINES || !gGame.isOn || gIsManuallyCreate) return
     var eliminateMine = (gLevel.MINES <= 3) ? 1 : 3
     for (var i = 0; i < eliminateMine; i++) {
         if (gFirstClick) {
@@ -193,7 +193,7 @@ function onMineExterminator(elBtn) {
 }
 
 function checkBestScore() {
-    localStorage.setItem('bestScore', Infinity)
+    // localStorage.setItem('bestScore', Infinity)
     const bestScore = localStorage.getItem('bestScore');
     if (gDeltaTime < bestScore) {
         localStorage.setItem('bestScore', gDeltaTime);
