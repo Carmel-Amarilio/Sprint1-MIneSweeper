@@ -168,6 +168,7 @@ function onUndo() {
     if (gAllBoard.length > 1) gAllBoard.pop()
     gBoard = gAllBoard.pop()
     randBoard(gBoard)
+    checkGameOver()
 }
 
 function onMineExterminator(elBtn) {
