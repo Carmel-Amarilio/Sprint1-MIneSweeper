@@ -7,6 +7,9 @@ body {
     /* font-family: 'Courier New', Courier, monospace; */
     font-family: 'Times New Roman', Times, serif
 }
+button{
+    cursor: pointer;
+}
 
 
 label {
@@ -169,6 +172,19 @@ td {
     border-radius: 10%;
     color: white;
     left: 43%;
+}
+
+.mine-exterminator{
+    height: 50px;
+    width: 100px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-size: 15px;
+    position: absolute;
+    background-color: rgb(85, 201, 237);
+    border-radius: 10%;
+    color: white;
+    right:0% ;
 }
 
 .best-score {

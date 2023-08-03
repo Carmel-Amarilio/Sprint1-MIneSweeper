@@ -3,8 +3,6 @@
 
 
 // todo: baest score
-// todo: Manually positioned mines
-// todo:MINE EXTERMINATOR
 
 var isHintOn = false
 var gElHint = null
@@ -47,14 +45,14 @@ function resatBonus() {
 
     //undo
     gAllBoard = []
-    
+
 }
 
 
 
 
 function onHint(elHint) {
-    if (isHintOn || !gGame.isOn || isMegaHintOn ) return
+    if (isHintOn || !gGame.isOn || isMegaHintOn) return
     gElHint = elHint
     gElHint.style.backgroundColor = 'rgb(248, 225, 119)'
     isHintOn = true
@@ -89,14 +87,14 @@ function revileNegs(row, col) {
 }
 
 function onMegaHint(elMegaHint) {
-    if (isHintOn || !gGame.isOn || isMegaHintOn ) return
+    if (isHintOn || !gGame.isOn || isMegaHintOn) return
     gElMegaHin = elMegaHint
     isMegaHintOn = true
     gElMegaHin.style.backgroundColor = 'rgb(248, 225, 119)'
 }
 
-function revileEra(){
-    console.log(cell1,cell2);
+function revileEra() {
+    console.log(cell1, cell2);
 
     var revileEra = []
     for (var i = cell1.row; i <= cell2.row; i++) {
@@ -158,6 +156,30 @@ function onUndo() {
     randBoard(gBoard)
 }
 
+function onMineExterminator(elBtn) {
+    if(!gLevel.MINES) return
+    var eliminate = (gLevel.MINES <= 4) ? 1 : 3
+    for (var i = 0; i < eliminate; i++) {
+        if (gFirstClick) {
+            startTimer()
+            gLevel.MINES--
+            gBoard = createBoard(0, 0)
+            const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
+            gAllBoard.push(copyOfGBoard);
+            gFirstClick = false
+        } else {
+            gLevel.MINES--
+            gNinesCells
+            var ranMineIndx = getRandomIntInclusive(0, gNinesCells.length - 1)
+            var cell = gNinesCells[ranMineIndx]
+            cell.isMine = false
+            gNinesCells.splice(ranMineIndx, 1)
+            randBoard(gBoard)
+        }
+    }
+
+}
+
 function randBoard(board) {
     var strHTML = ''
     for (var i = 0; i < board.length; i++) {
@@ -170,6 +192,7 @@ function randBoard(board) {
                 board[i][j].isShow = false
             }
             if (board[i][j].isShow) {
+                board[i][j].mineNegsCount = countNeighborsMine(i, j)
                 cellDisplay = (board[i][j].isMine) ? MINE : board[i][j].mineNegsCount
                 if (!cellDisplay) cellDisplay = ''
                 classCell = `class="display-cell"`

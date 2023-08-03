@@ -5,9 +5,9 @@ const MINE = '💣'
 const FLAG = '🚩'
 const HART = '❤️'
 const gLevel = {
-    SIZE: 4,
-    MINES: 2,
-    LIVES: 3
+    SIZE: 0,
+    MINES: 0,
+    LIVES: 0
 }
 const gGame = {
     isOn: false,
@@ -30,7 +30,7 @@ var gAllBoard = []
 
 
 function onInit() {
-    onSetLv({ size: gLevel.SIZE, mines: gLevel.MINES })
+    onSetLv({ size: 8, mines: 14 })
 }
 
 function onSetLv(level) {
