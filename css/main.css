@@ -75,14 +75,6 @@ input {
     border: 2px solid rgb(216, 202, 70);
 }
 
-.lives {
-    margin: auto;
-    margin-left: 0;
-    margin-right: 0;
-    font-size: 30px;
-}
-
-
 .hint, .mega-hint {
     margin-top: 7px;
     text-align: center;
@@ -105,12 +97,27 @@ input {
 }
 .hint:hover + .hintText {
     display: block;
-  }
+}
 
 .hints {
     margin-right: 5px;
     position: absolute;
     right: 0px;
+}
+
+.lives {
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 30px;
+}
+
+.main-remaining{
+    width: 80px;
+    height: 35px;
+    background-color: rgb(148, 148, 148) ;
+    margin-left: 5px;
+    font-size: 25px;
 }
 
 table {

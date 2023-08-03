@@ -48,14 +48,15 @@ function onSetLv(level) {
     gLevel.LIVES = 3
     document.querySelector('.emoji').innerText = '😃'
     updateLives()
-
+    
     resatBonus()
     const elTimer = document.querySelector('.timer span')
     elTimer.innerText = '00.00'
-
-
+    
+    
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
+    document.querySelector('.main-remaining span').innerText = gLevel.MINES
 
     var elBox = document.querySelector('.box')
     var elFeatures1Box = document.querySelector('.features1')
@@ -284,6 +285,7 @@ function updateLives() {
 
 function checkGameOver() {
     onBoardMap()
+    document.querySelector('.main-remaining span').innerText = gLevel.MINES - gGame.markedCount 
     const elEmoji = document.querySelector('.emoji')
     const emptyCells = gLevel.SIZE * gLevel.SIZE - gMinesCells.length
     if (gMinesCells.length === gGame.markedCount && gGame.shownCount === emptyCells) {
