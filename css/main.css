@@ -7,6 +7,9 @@ body {
     /* font-family: 'Courier New', Courier, monospace; */
     font-family: 'Times New Roman', Times, serif
 }
+button{
+    cursor: pointer;
+}
 
 
 label {
@@ -43,7 +46,7 @@ input {
     margin-bottom: 5PX;
 }
 
-button {
+.Level-btn {
     cursor: pointer;
     background-color: white;
     width: 80px;
@@ -72,25 +75,28 @@ button {
     border: 2px solid rgb(216, 202, 70);
 }
 
-.lives {
-    margin: auto;
-    margin-left: 0;
-    margin-right: 0;
-    font-size: 30px;
-}
-
-.hint {
+.hint, .mega-hint {
     margin-top: 7px;
     text-align: center;
     font-size: 20px;
     width: 40px;
-    height: 40px;
+    height: 35px;
     border: 0px;
     background-color: rgb(230, 230, 230);
 }
 
-.hint:hover {
+.hint:hover, .mega-hint:hover {
     background-color: rgb(245, 231, 168);
+}
+
+.hintText {
+    background-color: rgba(251, 251, 80, 0.647);
+    width: 50px;
+    height: 30px;
+    display: none;
+}
+.hint:hover + .hintText {
+    display: block;
 }
 
 .hints {
@@ -98,6 +104,39 @@ button {
     position: absolute;
     right: 0px;
 }
+
+.lives {
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 30px;
+}
+
+
+
+
+
+.main-remaining{
+    width: 80px;
+    height: 35px;
+    background-color: rgb(148, 148, 148) ;
+    margin-left: 5px;
+    font-size: 25px;
+}
+
+.manually-create{
+    width: 80px;
+    height: 35px;
+    background-color: rgb(74, 219, 245) ;
+    color: white;
+    font-size: 13px;
+    margin-right: 5px;
+    position: absolute;
+    right: 0px;
+    top: 20px;
+}
+
+
 
 table {
     margin: 0 auto;
@@ -126,7 +165,10 @@ td {
     background-color: rgb(192, 186, 186);
 }
 
-.features2 {
+
+
+
+.features3 {
     margin: auto;
     background-color: rgb(148, 148, 148);
     height: 70px;
@@ -160,17 +202,26 @@ td {
     left: 43%;
 }
 
-.best-score {
-    margin: auto;
-    margin-top: 20px;
-    background-color: lightblue;
-    width: 500px;
-    height: 500px;
-    border-radius: 10%;
+.mine-exterminator{
+    height: 50px;
+    width: 100px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-size: 15px;
     position: absolute;
-    bottom: 10px;
-    right: 25%;
-    ;
+    background-color: rgb(85, 201, 237);
+    border-radius: 10%;
+    color: white;
+    right:0% ;
 }
 
+.bast-score {
+    height: 30px;
+  background-color: bisque;
+      font-family: 'Courier New', Courier, monospace;
 
+}
+
+.bast-score span{
+    color: rgb(93, 93, 254);
+}

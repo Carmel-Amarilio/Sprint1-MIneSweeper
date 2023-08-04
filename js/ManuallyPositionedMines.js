@@ -39,8 +39,8 @@ function onManuallyCreate(elBtn) {
 }
 
 function plantMinesPlyer(row, col) {
-    gBoard[row][col].isMine = true
-    gBoard[row][col].isShow = true
+    gBoard[row][col].isMine = !gBoard[row][col].isMine
+    gBoard[row][col].isShow = !gBoard[row][col].isShow
     renderCell(row, col)
 
     mainOnBoardMap()
