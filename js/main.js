@@ -5,8 +5,8 @@ const MINE = '💣'
 const FLAG = '🚩'
 const HART = '❤️'
 const gLevel = {
-    SIZE: 8,
-    MINES: 14,
+    SIZE: 4,
+    MINES: 2,
     LIVES: 3
 }
 const gGame = {
@@ -21,8 +21,8 @@ var id = 0
 var gBoard = []
 var gFirstClick = true
 var gEmptyCellId = []
-var gMinesCells = []
-var gTimerIntervalId = null
+var gNinesCells = []
+var gTimerIntervalId
 var gAllBoard = []
 
 
@@ -30,41 +30,37 @@ var gAllBoard = []
 
 
 function onInit() {
-
     onSetLv({ size: gLevel.SIZE, mines: gLevel.MINES })
 }
 
 function onSetLv(level) {
     clearInterval(gTimerIntervalId)
-    if (isHintOn) return
+    if(isHintOn) return
     gGame.isOn = true
     gBoard = []
     id = 0
     gFirstClick = true
     gEmptyCellId = []
-    gMinesCells = []
+    gNinesCells = []
     gGame.markedCount = 0
     gGame.shownCount = 0
     gLevel.LIVES = 3
-    gTimerIntervalId = null
-    gIsManuallyCreate = false
+    document.querySelector('.emoji').innerText = '😃'
     updateLives()
-    
+
     resatBonus()
+    const elTimer = document.querySelector('.timer span')
+    elTimer.innerText = '00.00'
     
-    
+
     gLevel.SIZE = level.size
     gLevel.MINES = level.mines
-    document.querySelector('.main-remaining span').innerText = gLevel.MINES
-    
-    
-    document.querySelector('.manually-create').style.backgroundColor = 'rgb(74, 219, 245)'
-    document.querySelector('.timer span').innerText = '00.00'
-    document.querySelector('.emoji').innerText = '😃'
+
     var elBox = document.querySelector('.box')
-    document.querySelector('.features1').style.width = (gLevel.SIZE * 60 + 200) + 'px'
+    var elFeatures1Box = document.querySelector('.features1')
     elBox.style.width = (gLevel.SIZE * 60 + 200) + 'px'
     elBox.style.height = (gLevel.SIZE * 70 + 350) + 'px'
+    elFeatures1Box.style.width = (gLevel.SIZE * 60 + 200) + 'px'
 
     renderBlankBoard()
 
@@ -75,7 +71,7 @@ function renderBlankBoard() {
     for (var i = 0; i < gLevel.SIZE; i++) {
         strHTML += `\n<tr>`
         for (var j = 0; j < gLevel.SIZE; j++) {
-            strHTML += ` \n<td title=" ${i}, ${j}" onmousedown="onCellClick(event, ${i}, ${j})"></td>`
+            strHTML += ` \n<td title="Seat: ${i}, ${j}" onmousedown="onCellClick(event, ${i}, ${j})"></td>`
         }
         strHTML += `\n</tr>`
     }
@@ -94,8 +90,7 @@ function onCellClick(event, i, j) {
 
     if (event.button === 0) {
         clickLeft(i, j);
-        const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
-        gAllBoard.push(copyOfGBoard);
+        gAllBoard.push(gBoard)
 
     } else if (event.button === 2) {
         clickRight(i, j);
@@ -106,47 +101,35 @@ function clickRight(row, col) {
     if (gBoard.length === 0 || gBoard[row][col].isShow) return
     if (!gBoard[row][col].isFlag) {
         gBoard[row][col].isFlag = true
+        gGame.markedCount++
     } else {
         gBoard[row][col].isFlag = false
+        gGame.markedCount--
     }
     renderCell(row, col)
-    const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
-    gAllBoard.push(copyOfGBoard);
+    gAllBoard.push(gBoard)
     checkGameOver()
 }
 
 
 function clickLeft(row, col) {
-    if(gIsManuallyCreate){
-        plantMinesPlyer(row, col)
-        return
-    } 
     if (gFirstClick) {
+        startTimer()
         gBoard = createBoard(row, col)
-        const copyOfGBoard = JSON.parse(JSON.stringify(gBoard));
-        gAllBoard.push(copyOfGBoard);
         gFirstClick = false
     }
+
     if (isHintOn) {
         revileNegs(row, col)
         return
     }
-    
-    if (isMegaHintOn) {
-        
-        if (!cell2 && cell1) {
-            cell2 = { row, col }
-            revileEra()
-        }
-        if (!cell1) cell1 = { row, col }
-        return
-    }
-    
-    if(!gTimerIntervalId) startTimer()
+
     if (!gBoard[row][col].isMine) {
         const countNegsMine = countNeighborsMine(row, col)
         gBoard[row][col].mineNegsCount = countNegsMine
         gBoard[row][col].isShow = true
+        gGame.shownCount++
+
         if (!countNegsMine) showNegs(row, col)
 
     } else {
@@ -185,12 +168,13 @@ function createBoard(row, col) {
         }
     }
     plantMines(board, row, col)
+    gAllBoard.push(board)
 
     return board
 }
 
 function renderCell(row, col) {
-    const elCell = document.querySelector(`[title=" ${row}, ${col}"]`)
+    const elCell = document.querySelector(`[title="Seat: ${row}, ${col}"]`)
     var cellIcon = ''
 
     if (gBoard[row][col].isFlag) {
@@ -205,7 +189,7 @@ function renderCell(row, col) {
     } else {
         elCell.classList.remove('display-cell')
         // cellIcon = ''
-    }
+    } 
 
     if (gBoard[row][col].isMine) {
         if (gBoard[row][col].isShow) {
@@ -233,7 +217,7 @@ function plantMines(board, row, col) {
         var ranMineIndx = getRandomIntInclusive(0, gEmptyCellId.length - 1)
         var cell = getCellById(board, gEmptyCellId[ranMineIndx])
         cell.isMine = true
-        gMinesCells.push(cell)
+        gNinesCells.push(cell)
         gEmptyCellId.splice(ranMineIndx, 1)
     }
 
@@ -267,6 +251,7 @@ function countNeighborsMine(row, col) {
 }
 
 function showNegs(row, col) {
+
     for (var i = row - 1; i <= row + 1; i++) {
         if (i < 0 || i > gBoard.length - 1) continue
         for (var j = col - 1; j <= col + 1; j++) {
@@ -289,14 +274,12 @@ function updateLives() {
 }
 
 function checkGameOver() {
-    onBoardMap()
-    document.querySelector('.main-remaining span').innerText = gMinesCells.length - gGame.markedCount 
     const elEmoji = document.querySelector('.emoji')
-    const emptyCells = gLevel.SIZE * gLevel.SIZE - gMinesCells.length
-    if (gMinesCells.length === gGame.markedCount && gGame.shownCount === emptyCells) {
+    const emptyCells = gLevel.SIZE * gLevel.SIZE - gLevel.MINES
+
+    if (gLevel.MINES === gGame.markedCount && gGame.shownCount === emptyCells) {
         console.log('wine!!');
         elEmoji.innerText = '😎'
-        checkBestScore()
         gGame.isOn = false
         clearInterval(gTimerIntervalId)
     }
@@ -311,10 +294,10 @@ function checkGameOver() {
 }
 
 function showMines() {
-    for (var i = 0; i < gMinesCells.length; i++) {
-        gMinesCells[i].isShow = true
-        gMinesCells[i].isFlag = false
-        console.log(gMinesCells[i]);
-        renderCell(gMinesCells[i].i, gMinesCells[i].j)
+    for (var i = 0; i < gNinesCells.length; i++) {
+        gNinesCells[i].isShow = true
+        gNinesCells[i].isFlag = false
+        console.log(gNinesCells[i]);
+        renderCell(gNinesCells[i].i, gNinesCells[i].j)
     }
 }

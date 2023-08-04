@@ -1,5 +1,4 @@
 'use strict'
-var gDeltaTime = 0
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -20,8 +19,8 @@ function startTimer() {
     var startTime = Date.now()
 
     gTimerIntervalId = setInterval(function () {
-        gDeltaTime = Date.now() - startTime
+        var delta = Date.now() - startTime
         var elTimer = document.querySelector('.timer span')
-        elTimer.innerText = `${(gDeltaTime / 1000).toFixed(2)}`
+        elTimer.innerText = `${(delta / 1000).toFixed(2)}`
     }, 37)
 }
